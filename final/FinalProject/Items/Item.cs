@@ -5,21 +5,29 @@ namespace RpgBattleProject.Items
 {
     public class Item
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public int Value { get; private set; }
+        // Private fields
+        private string _name;
+        private string _description;
+        private int _value;
 
         public Item(string name, string description, int value)
         {
-            Name = name;
-            Description = description;
-            Value = value;
+            _name = name;
+            _description = description;
+            _value = value;
         }
+
+        // Getters
+        public string GetName() => _name;
+        public string GetDescription() => _description;
+        public int GetValue() => _value;
+
+        // No setters needed — original properties were read‑only
 
         public void Use(Character target)
         {
-            Console.WriteLine($"{target.Name} uses {Name}.");
-            target.Heal(Value);
+            Console.WriteLine($"{target.GetName()} uses {_name}.");
+            target.Heal(_value);
         }
     }
 }

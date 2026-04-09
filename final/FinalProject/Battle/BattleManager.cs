@@ -1,5 +1,5 @@
-using System;
 using RpgBattleProject.Characters;
+using System;
 
 namespace RpgBattleProject.Battle
 {
@@ -16,47 +16,42 @@ namespace RpgBattleProject.Battle
 
         public void StartBattle()
         {
-            Console.WriteLine("=== Battle Start ===");
-            Console.WriteLine($"{_player.Name} vs {_enemy.Name}");
-            Console.WriteLine();
+            Console.WriteLine($"Battle start - {_player.GetName()} vs {_enemy.GetName()}");
 
-            while (_player.IsAlive && _enemy.IsAlive)
+            while (_player.IsAlive() && _enemy.IsAlive())
             {
                 PlayerTurn();
-                if (!_enemy.IsAlive) break;
+                if (!_enemy.IsAlive()) break;
 
                 EnemyTurn();
             }
 
-            Console.WriteLine(_player.IsAlive ? $"{_player.Name} wins!" : $"{_enemy.Name} wins!");
+            Console.WriteLine(_player.IsAlive()
+                ? $"{_player.GetName()} wins!"
+                : $"{_enemy.GetName()} wins!");
         }
 
         private void PlayerTurn()
         {
-            Console.WriteLine();
-            Console.WriteLine("Your turn!");
-            Console.WriteLine("1. Basic Attack");
+            Console.WriteLine($"{_player.GetName()}'s turn!");
+            Console.WriteLine("1. Attack");
             Console.WriteLine("2. Use Ability");
-            Console.WriteLine("3. Use Item");
-            Console.Write("Choose an action: ");
+            Console.WriteLine("3. Inventory");
 
+            Console.Write("Choose an action: ");
             string input = Console.ReadLine();
-            Console.WriteLine();
 
             switch (input)
             {
                 case "1":
                     _player.Attack(_enemy);
                     break;
-
                 case "2":
                     UseAbilityMenu();
                     break;
-
                 case "3":
-                    UseItemMenu();
+                    InventoryMenu();
                     break;
-
                 default:
                     Console.WriteLine("Invalid choice.");
                     break;
@@ -65,16 +60,18 @@ namespace RpgBattleProject.Battle
 
         private void UseAbilityMenu()
         {
-            if (_player.Abilities.Count == 0)
+            var abilities = _player.GetAbilities();
+
+            if (abilities.Count == 0)
             {
                 Console.WriteLine("You have no abilities.");
                 return;
             }
 
             Console.WriteLine("Choose an ability:");
-            for (int i = 0; i < _player.Abilities.Count; i++)
+            for (int i = 0; i < abilities.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {_player.Abilities[i].Name}");
+                Console.WriteLine($"{i + 1}. {abilities[i].GetName()}");
             }
 
             Console.Write("Ability number: ");
@@ -86,22 +83,24 @@ namespace RpgBattleProject.Battle
             }
         }
 
-        private void UseItemMenu()
+        private void InventoryMenu()
         {
-            _player.Inventory.ListItems();
-            Console.Write("Item number: ");
+            var inventory = _player.GetInventory();
+
+            inventory.ListItems();
+
+            Console.Write("Choose item to use: ");
             string input = Console.ReadLine();
 
             if (int.TryParse(input, out int choice))
             {
-                _player.Inventory.UseItem(choice - 1, _player);
+                inventory.UseItem(choice - 1, _player);
             }
         }
 
         private void EnemyTurn()
         {
-            Console.WriteLine();
-            Console.WriteLine("Enemy turn!");
+            Console.WriteLine($"{_enemy.GetName()}'s turn!");
             _enemy.Attack(_player);
         }
     }

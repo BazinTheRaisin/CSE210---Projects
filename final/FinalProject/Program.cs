@@ -16,7 +16,8 @@ namespace RpgBattleProject
             Character player = ChooseCharacterClass(name);
             Character enemy = new Warrior("Goblin Warrior");
 
-            player.Inventory.AddItem(new Item("Small Potion", "Heals a small amount of HP.", 10));
+            // Replace Inventory.AddItem with GetInventory().AddItem(...)
+            player.GetInventory().AddItem(new Item("Small Potion", "Heals a small amount of HP.", 10));
 
             BattleManager battle = new BattleManager(player, enemy);
             battle.StartBattle();
@@ -43,7 +44,9 @@ namespace RpgBattleProject
                     case "1": return new Warrior(name);
                     case "2": return new Mage(name);
                     case "3": return new Archer(name);
-                    default: Console.WriteLine("Invalid choice."); break;
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
                 }
             }
         }

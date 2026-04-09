@@ -7,55 +7,80 @@ namespace RpgBattleProject.Characters
 {
     public abstract class Character
     {
-        public string Name { get; private set; }
-        public int Level { get; private set; }
-        public int MaxHealth { get; private set; }
-        public int CurrentHealth { get; private set; }
-        public int AttackPower { get; protected set; }
-        public int MagicPower { get; protected set; }
-
-        public Inventory Inventory { get; private set; }
-        public List<Ability> Abilities { get; private set; }
+        // Private fields
+        private string _name;
+        private int _level;
+        private int _maxHealth;
+        private int _currentHealth;
+        private int _attackPower;
+        private int _magicPower;
+        private Inventory _inventory;
+        private List<Ability> _abilities;
 
         protected Character(string name, int level, int maxHealth)
         {
-            Name = name;
-            Level = level;
-            MaxHealth = maxHealth;
-            CurrentHealth = maxHealth;
-            Inventory = new Inventory();
-            Abilities = new List<Ability>();
+            _name = name;
+            _level = level;
+            _maxHealth = maxHealth;
+            _currentHealth = maxHealth;
+            _inventory = new Inventory();
+            _abilities = new List<Ability>();
         }
 
-        public bool IsAlive => CurrentHealth > 0;
+        // Getters
+        public string GetName() => _name;
+        public int GetLevel() => _level;
+        public int GetMaxHealth() => _maxHealth;
+        public int GetCurrentHealth() => _currentHealth;
+        public int GetAttackPower() => _attackPower;
+        public int GetMagicPower() => _magicPower;
+        public Inventory GetInventory() => _inventory;
+        public List<Ability> GetAbilities() => _abilities;
+
+        // Setters (only where your original properties allowed setting)
+        public void SetCurrentHealth(int value) => _currentHealth = value;
+        public void SetAttackPower(int value) => _attackPower = value;
+        public void SetMagicPower(int value) => _magicPower = value;
+
+        // Optional setters (if you want to allow changing these)
+        public void SetLevel(int value) => _level = value;
+        public void SetName(string value) => _name = value;
+
+        // Replaces: public bool IsAlive => CurrentHealth > 0;
+        public bool IsAlive()
+        {
+            return _currentHealth > 0;
+        }
 
         public void TakeDamage(int amount)
         {
-            CurrentHealth -= amount;
-            if (CurrentHealth < 0) CurrentHealth = 0;
+            _currentHealth -= amount;
+            if (_currentHealth < 0)
+                _currentHealth = 0;
 
-            Console.WriteLine($"{Name} takes {amount} damage. HP: {CurrentHealth}/{MaxHealth}");
+            Console.WriteLine($"{_name} takes {amount} damage. HP: {_currentHealth}/{_maxHealth}");
         }
 
         public void Heal(int amount)
         {
-            CurrentHealth += amount;
-            if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
+            _currentHealth += amount;
+            if (_currentHealth > _maxHealth)
+                _currentHealth = _maxHealth;
 
-            Console.WriteLine($"{Name} heals {amount} HP. HP: {CurrentHealth}/{MaxHealth}");
+            Console.WriteLine($"{_name} heals {amount} HP. HP: {_currentHealth}/{_maxHealth}");
         }
 
         public abstract void Attack(Character target);
 
         public virtual void UseAbility(int index, Character target)
         {
-            if (index < 0 || index >= Abilities.Count)
+            if (index < 0 || index >= _abilities.Count)
             {
                 Console.WriteLine("Invalid ability.");
                 return;
             }
 
-            Abilities[index].Execute(this, target);
+            _abilities[index].Execute(this, target);
         }
     }
 }

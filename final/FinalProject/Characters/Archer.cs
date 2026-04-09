@@ -8,16 +8,21 @@ namespace RpgBattleProject.Characters
         public Archer(string name, int level = 1)
             : base(name, level, 30)
         {
-            AttackPower = 8;
-            MagicPower = 4;
+            // Replace property assignments with setter methods
+            SetAttackPower(8);
+            SetMagicPower(4);
 
-            Abilities.Add(new Ability("Piercing Arrow", 0, 14, AbilityType.Physical));
+            // Replace Abilities.Add(...) with GetAbilities().Add(...)
+            GetAbilities().Add(new Ability("Piercing Arrow", 0, 14, AbilityType.Physical));
         }
 
         public override void Attack(Character target)
         {
-            Console.WriteLine($"{Name} shoots an arrow at {target.Name}!");
-            target.TakeDamage(AttackPower);
+            // Replace Name with GetName()
+            Console.WriteLine($"{GetName()} shoots an arrow at {target.GetName()}!");
+
+            // Replace AttackPower with GetAttackPower()
+            target.TakeDamage(GetAttackPower());
         }
     }
 }

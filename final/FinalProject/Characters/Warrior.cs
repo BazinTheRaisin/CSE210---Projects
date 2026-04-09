@@ -8,16 +8,21 @@ namespace RpgBattleProject.Characters
         public Warrior(string name, int level = 1)
             : base(name, level, 40)
         {
-            AttackPower = 10;
-            MagicPower = 2;
+            // Replace property assignments with setter methods
+            SetAttackPower(10);
+            SetMagicPower(2);
 
-            Abilities.Add(new Ability("Power Strike", 0, 15, AbilityType.Physical));
+            // Replace Abilities.Add(...) with GetAbilities().Add(...)
+            GetAbilities().Add(new Ability("Power Strike", 0, 15, AbilityType.Physical));
         }
 
         public override void Attack(Character target)
         {
-            Console.WriteLine($"{Name} swings a sword at {target.Name}!");
-            target.TakeDamage(AttackPower);
+            // Replace Name with GetName()
+            Console.WriteLine($"{GetName()} swings a sword at {target.GetName()}!");
+
+            // Replace AttackPower with GetAttackPower()
+            target.TakeDamage(GetAttackPower());
         }
     }
 }
